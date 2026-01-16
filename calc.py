@@ -1,7 +1,6 @@
 import random
 from typing import List, Tuple, Optional
 import pygame as pg
-from calc import *
 from config import *
 
 # ---------------- HPバー ----------------
