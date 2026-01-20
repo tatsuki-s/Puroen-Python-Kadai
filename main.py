@@ -7,8 +7,9 @@ from font import get_jp_font
 
 pg.init()
 screen = pg.display.set_mode((WIN_W, WIN_H))
-pg.display.set_caption("Puzzle & Monsters - Team7")
+pg.display.set_caption(TITLE)
 font = get_jp_font(26)
+
 
 party = {
     "player_name":"Player",
@@ -37,8 +38,13 @@ hover_idx: Optional[int] = None
 message = "ドラッグで A..N の宝石を移動（例：A→F）"
 
 clock = pg.time.Clock()
+
+# 0: タイトル, 1: プレイ, 2: 未定
+status = 0
+
 running=True
 while running:
+    keys=pg.key.get_pressed()
     for e in pg.event.get():
         if e.type==pg.QUIT:
             running=False
@@ -116,7 +122,9 @@ while running:
                         draw_field(screen, field, font); draw_message(screen, message, font)
                         pg.display.flip(); time.sleep(FRAME_DELAY)
                         if party["hp"]<=0:
-                            message="パーティは力尽きた…（ESCで終了）"
+                            message="パーティは力尽きた…"
+                            status = 0
+
                     else:
                         enemy_idx+=1
                         if enemy_idx<len(enemies):
@@ -124,22 +132,35 @@ while running:
                             field=init_field()
                             message=f"さらに奥へ… 次は {enemy['name']}"
                         else:
-                            message="ダンジョン制覇！おめでとう！（ESCで終了）"
+                            message="ダンジョン制覇！おめでとう！"
 
             # ドラッグ終了
             drag_src = None
             drag_elem = None
             hover_idx = None
 
-    # 常時描画
-    screen.fill((22,22,28))
-    draw_top(screen, enemy, party, font)
-    draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
-    draw_message(screen, message, font)
-    pg.display.flip()
-    clock.tick(60)
+        # 描画関係
+        # 背景黒塗り
+        screen.fill((22,22,28))
+        # statusが0のときタイトル画面を描画
+        if status == 0:
+            title_screen = font.render(TITLE, True, (255,255,255))
+            screen.blit(title_screen, [WIN_W // 3, WIN_H // 4])
+            text = font.render("Click to start", True, (255,255,255))
+            screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
+            if e.type == pg.MOUSEBUTTONDOWN:
+                status = 1
+                print("starting...")
 
-    keys=pg.key.get_pressed()
+        # statusが1のときゲームがプレイできる
+        elif status == 1:
+            draw_top(screen, enemy, party, font)
+            draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
+            draw_message(screen, message, font)
+
+        pg.display.flip()
+        clock.tick(60)
+
     if keys[pg.K_ESCAPE]:
         running=False
 

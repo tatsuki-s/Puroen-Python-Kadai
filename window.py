@@ -1,6 +1,6 @@
 import pygame as pg
 
-from typing import List, Tuple, Optional
+from typing import List, Optional
 from config import *
 from calc import *
 import os

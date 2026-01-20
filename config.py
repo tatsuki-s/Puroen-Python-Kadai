@@ -7,6 +7,7 @@ FIELD_Y = 520
 SLOT_W = 60
 SLOT_PAD = 8
 LEFT_MARGIN = 30
+TITLE = "Puzzle & Monsters - Team7" 
 
 # ドラッグ演出
 DRAG_SCALE = 1.18
