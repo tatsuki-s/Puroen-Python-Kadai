@@ -116,8 +116,6 @@ while running:
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if enemy["hp"]<=0:
                                 message=f"{enemy['name']} を倒した！"
-                                screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
-                                pg.display.flip()
                                 break
 
                         # 敵ターン or 撃破後処理
@@ -147,7 +145,13 @@ while running:
                 hover_idx = None
                 print(enemies, ENEMIES)
 
-        elif status == 2:
+                screen.fill((22,22,28))
+                draw_top(screen, enemy, party, font)
+                draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
+                draw_message(screen, message, font)
+
+        if status == 2:
+            screen.fill((22,22,28))
             msg = font.render(message, True, (255,255,255))
             screen.blit(msg, [WIN_W // 3, WIN_H // 4])
             enemy_idx = 0
@@ -158,10 +162,9 @@ while running:
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 0
                 print("reset")
-        # elif status == 3:
-        #     title_screen = font.render(TITLE, True, (255,255,255))
-        #     screen.blit(message, [WIN_W // 3, WIN_H // 4])
         print(enemy_idx)
+
+    
 
         pg.display.flip()
         clock.tick(60)
