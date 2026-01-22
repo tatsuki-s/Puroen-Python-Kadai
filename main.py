@@ -103,8 +103,8 @@ while running:
                             elem = field[start]
                             if elem=="命":
                                 heal=jitter(20*(1.5**((L-3)+combo)))
-                                party["hp"]=min(party["max_hp"], party["hp"]+heal)
-                                message=f"HP +{heal}"
+                                party["hp"]=min(party["max_hp"], party["hp"]+heal+point)
+                                message=f"HP +{heal + point}"
                             else:
                                 dmg, pnt =party_attack_from_gems(point,elem,L,combo,party,enemy)
                                 message=f"{elem}攻撃！ {dmg} ダメージ"
@@ -146,7 +146,7 @@ while running:
                 drag_src = None
                 drag_elem = None
                 hover_idx = None
-                print(enemies, ENEMIES)
+                # print(enemies, ENEMIES)
 
                 screen.fill((22,22,28))
                 draw_top(screen, enemy, party, font)
@@ -165,8 +165,8 @@ while running:
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 0
                 print("reset")
-        print(enemy_idx)
-    
+        # print(enemy_idx)
+
         draw_point(screen, point, font)
         pg.display.flip()
         clock.tick(60)
