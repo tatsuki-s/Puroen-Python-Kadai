@@ -3,7 +3,7 @@ import os
 
 # ---------------- フォント解決 ----------------
 def get_jp_font(size: int) -> pg.font.Font:
-    bundle = os.path.join("assets", "fonts", "NotoSansJP-VariableFont_wght.ttf")
+    bundle = os.path.join("assets", "fonts", "misaki_gothic_2nd.ttf")
     if os.path.exists(bundle):
         return pg.font.Font(bundle, size)
     candidates = [
