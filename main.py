@@ -1,5 +1,5 @@
 import pygame as pg
-import sys, time
+import sys, time, copy
 from typing import Optional
 
 from window import *
@@ -11,7 +11,7 @@ pg.display.set_caption(TITLE)
 font = get_jp_font(26)
 
 party = PARTY.copy()
-enemies = ENEMIES.copy()
+enemies = copy.deepcopy(ENEMIES)
 
 enemy_idx=0
 enemy = enemies[enemy_idx]
@@ -143,6 +143,7 @@ while running:
                 drag_src = None
                 drag_elem = None
                 hover_idx = None
+                print(enemies, ENEMIES)
 
         elif status == 2:
             msg = font.render(message, True, (255,255,255))
