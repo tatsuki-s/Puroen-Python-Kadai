@@ -17,6 +17,8 @@ enemy_idx=0
 enemy = enemies[enemy_idx]
 field = init_field()
 
+point = 0
+
 drag_src: Optional[int] = None
 drag_elem: Optional[str] = None
 hover_idx: Optional[int] = None
@@ -83,7 +85,7 @@ while running:
                                 nxt = k + step
                                 field[k], field[nxt] = field[nxt], field[k]
                                 k = nxt
-                                message=f"{SLOTS[k-step]}↔{SLOTS[k]} を交換"
+                                message=f"{SLOTS[k-step]}<->{SLOTS[k]} を交換"
                                 screen.fill((22,22,28))
                                 draw_top(screen, enemy, party, font)
                                 draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
@@ -104,8 +106,9 @@ while running:
                                 party["hp"]=min(party["max_hp"], party["hp"]+heal)
                                 message=f"HP +{heal}"
                             else:
-                                dmg=party_attack_from_gems(elem,L,combo,party,enemy)
+                                dmg, pnt =party_attack_from_gems(point,elem,L,combo,party,enemy)
                                 message=f"{elem}攻撃！ {dmg} ダメージ"
+                                point += pnt//10
                             collapse_left(field,start,L)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
                             draw_field(screen, field, font); draw_message(screen, "消滅！", font)
@@ -163,9 +166,8 @@ while running:
                 status = 0
                 print("reset")
         print(enemy_idx)
-
     
-
+        draw_point(screen, point, font)
         pg.display.flip()
         clock.tick(60)
 

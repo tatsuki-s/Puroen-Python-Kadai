@@ -69,15 +69,16 @@ def attr_coeff(att,defe):
     if defe in cyc and cyc[defe]==att: return 0.5
     return 1.0
 
-def party_attack_from_gems(elem:str, run_len:int, combo:int, party:dict, monster:dict)->int:
+def party_attack_from_gems(point:int, elem:str, run_len:int, combo:int, party:dict, monster:dict)->int:
     combo_coeff = 1.5 ** ((run_len - 3) + combo)
     if elem=="命":
         heal=jitter(20*combo_coeff); party["hp"]=min(party["max_hp"], party["hp"]+heal); return 0
     ally = next((a for a in party["allies"] if a["element"]==elem), None)
     if not ally: return 0
-    base=max(1, ally["ap"]-monster["dp"])
+    base=max(1, (point + ally["ap"])-monster["dp"])
+    pnt = ally["ap"]
     dmg=jitter(base*attr_coeff(elem,monster["element"])*combo_coeff)
-    monster["hp"]=max(0,monster["hp"]-dmg); return dmg
+    monster["hp"]=max(0,monster["hp"]-dmg); return dmg, pnt
 
 def enemy_attack(party:dict, monster:dict)->int:
     base=max(1, monster["ap"]-party["dp"])

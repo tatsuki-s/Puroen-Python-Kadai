@@ -97,3 +97,6 @@ def draw_message(screen, text, font):
     surf = font.render(text, True, (230,230,230))
     screen.blit(surf,(40,460))
 
+def draw_point(screen, point, font):
+    msg = font.render(f"経験値：{str(point)}", True, (255,255,255))
+    screen.blit(msg, [ 10 , WIN_H - 40])
