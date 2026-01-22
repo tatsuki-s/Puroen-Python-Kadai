@@ -116,6 +116,8 @@ while running:
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if enemy["hp"]<=0:
                                 message=f"{enemy['name']} を倒した！"
+                                screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
+                                pg.display.flip()
                                 break
 
                         # 敵ターン or 撃破後処理
@@ -151,7 +153,7 @@ while running:
             enemy_idx = 0
             enemy = enemies[enemy_idx]
             party = PARTY.copy()
-            enemies = ENEMIES.copy()
+            enemies = copy.deepcopy(ENEMIES)
 
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 0
