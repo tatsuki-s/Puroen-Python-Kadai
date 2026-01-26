@@ -51,10 +51,14 @@ def draw_field(screen, field:List[str], font, hover_idx:Optional[int]=None,
         rect=slot_rect(i)
         base = (35,35,40) if hover_idx!=i else (60,60,80)
         pg.draw.rect(screen, base, rect, border_radius=8)
-    # 宝石（ドラッグ開始スロットは空に見せる）
+    # 宝石（ドラッグ開始スロットは空に見せる）-> 見せない
     for i,elem in enumerate(field):
-        if drag_src is not None and i==drag_src:
-            continue
+        if drag_src is not None :
+            # if i==drag_src:
+            #     print(i, elem)
+            #     continue
+            if i==hover_idx:
+                continue
         rect=slot_rect(i)
         cx,cy=rect.center
         pg.draw.circle(screen, COLOR_RGB[elem], (cx,cy), SLOT_W//2-10)
@@ -97,3 +101,6 @@ def draw_message(screen, text, font):
     surf = font.render(text, True, (230,230,230))
     screen.blit(surf,(40,460))
 
+def draw_point(screen, point, font):
+    msg = font.render(f"経験値：{str(point)}", True, (255,255,255))
+    screen.blit(msg, [ 10 , WIN_H - 40])
