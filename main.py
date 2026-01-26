@@ -22,6 +22,8 @@ point = 0
 drag_src: Optional[int] = None
 drag_elem: Optional[str] = None
 hover_idx: Optional[int] = None
+prev_hover: Optional[int] = None
+
 message = "ドラッグで A..N の宝石を移動（例：A→F）"
 
 clock = pg.time.Clock()
@@ -48,14 +50,14 @@ while running:
             screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 1
-                print("starting...")
+                # print("starting...")
 
         # statusが1のときゲームがプレイできる
         elif status == 1:
             draw_top(screen, enemy, party, font)
             draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
             draw_message(screen, message, font)
-            if e.type==pg.MOUSEBUTTONDOWN and e.button==1:
+            if e.type==pg.MOUSEBUTTONDOWN and e.button==1: 
                 mx,my = e.pos
                 if FIELD_Y<=my<=FIELD_Y+SLOT_W:
                     i = (mx-LEFT_MARGIN)//(SLOT_W+SLOT_PAD)
@@ -63,12 +65,38 @@ while running:
                         drag_src = i
                         drag_elem = field[i]
                         message=f"{SLOTS[i]} を掴んだ"
+                        prev_hover = i
+                        # print((e.pos[0]-LEFT_MARGIN)//(SLOT_W+SLOT_PAD))
+                        # print(e.pos)
+                        # if e.type == pg.MOUSEMOTION:
+                        #     print("motion!")
+                        #     mx,my = e.pos
+                        #     if FIELD_Y<=my<=FIELD_Y+SLOT_W:
+                        #         j = (mx-LEFT_MARGIN)//(SLOT_W+SLOT_PAD)
+                        #         hover_idx = j if 0 <= i < 14 else None
+                        #         print(i, j)
+                        #         
+                        #     else:
+                        #         hover_idx = None
 
             elif e.type==pg.MOUSEMOTION:
                 mx,my = e.pos
                 if FIELD_Y<=my<=FIELD_Y+SLOT_W:
                     hi = (mx-LEFT_MARGIN)//(SLOT_W+SLOT_PAD)
                     hover_idx = hi if 0<=hi<14 else None
+                    # print(hi,drag_src)
+                    # ドラッグしているときの条件
+                    if drag_src is not None:
+                        # ここで1ドラッグで1回移動
+                        if hover_idx != prev_hover:
+                            field[drag_src], field[hover_idx] = field[hover_idx], field[drag_src]
+                            drag_src = hover_idx
+                            prev_hover = hover_idx
+                        # print(prev_hover, drag_src, hover_idx, field)
+                        # draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
+                        # print(hi, hover_idx)
+
+                    # print(hi)
                 else:
                     hover_idx = None
 
@@ -77,21 +105,22 @@ while running:
                     mx,my = e.pos
                     j = (mx-LEFT_MARGIN)//(SLOT_W+SLOT_PAD)
                     if 0<=j<14:
-                        i = drag_src
-                        if i != j:
-                            step = 1 if j>i else -1
-                            k = i
-                            while k!=j:
-                                nxt = k + step
-                                field[k], field[nxt] = field[nxt], field[k]
-                                k = nxt
-                                message=f"{SLOTS[k-step]}<->{SLOTS[k]} を交換"
-                                screen.fill((22,22,28))
-                                draw_top(screen, enemy, party, font)
-                                draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
-                                draw_message(screen, message, font)
-                                pg.display.flip()
-                                time.sleep(FRAME_DELAY)
+                        # i = drag_src
+                        # print(i, j)
+                        # if i != j:
+                        #     step = 1 if j>i else -1
+                        #     k = i
+                        #     while k!=j:
+                        #         nxt = k + step
+                        #         field[k], field[nxt] = field[nxt], field[k]
+                        #         k = nxt
+                        #         # message=f"{SLOTS[k-step]}<->{SLOTS[k]} を交換"
+                        #         screen.fill((22,22,28))
+                        #         draw_top(screen, enemy, party, font)
+                        #         draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
+                        #         draw_message(screen, message, font)
+                        #         pg.display.flip()
+                        #         time.sleep(FRAME_DELAY)
 
                         # 評価ループ
                         combo=0
@@ -146,6 +175,7 @@ while running:
                 drag_src = None
                 drag_elem = None
                 hover_idx = None
+                prev_hover = None
                 # print(enemies, ENEMIES)
 
                 screen.fill((22,22,28))
