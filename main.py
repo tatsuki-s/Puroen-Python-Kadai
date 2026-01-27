@@ -86,7 +86,7 @@ while running:
                     hover_idx = hi if 0<=hi<14 else None
                     # print(hi,drag_src)
                     # ドラッグしているときの条件
-                    if drag_src is not None:
+                    if drag_src is not None and hover_idx is not None:
                         # ここで1ドラッグで1回移動
                         if hover_idx != prev_hover:
                             field[drag_src], field[hover_idx] = field[hover_idx], field[drag_src]
