@@ -28,7 +28,7 @@ message = "ドラッグで A..N の宝石を移動（例：A→F）"
 
 clock = pg.time.Clock()
 
-# 0: タイトル, 1: プレイ, 2: 未定
+# 0: タイトル, 1: プレイ, 2: ゲームオーバー
 status = 0
 
 running=True
@@ -48,6 +48,7 @@ while running:
             screen.blit(title_screen, [WIN_W // 3, WIN_H // 4])
             text = font.render("Click to start", True, (255,255,255))
             screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
+            draw_point(screen, point, font)
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 1
                 # print("starting...")
@@ -55,8 +56,9 @@ while running:
         # statusが1のときゲームがプレイできる
         elif status == 1:
             draw_top(screen, enemy, party, font)
-            draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
             draw_message(screen, message, font)
+            draw_point(screen, point, font)
+            draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
             if e.type==pg.MOUSEBUTTONDOWN and e.button==1: 
                 mx,my = e.pos
                 if FIELD_Y<=my<=FIELD_Y+SLOT_W:
@@ -92,7 +94,6 @@ while running:
                             field[drag_src], field[hover_idx] = field[hover_idx], field[drag_src]
                             drag_src = hover_idx
                             prev_hover = hover_idx
-                            drag_elem = field[hover_idx]
                         # print(prev_hover, drag_src, hover_idx, field)
                         # draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
                         # print(hi, hover_idx)
@@ -126,6 +127,7 @@ while running:
                         # 評価ループ
                         combo=0
                         while True:
+                            # print("a",combo)
                             run = leftmost_run(field)
                             if not run: break
                             start,L = run
@@ -138,25 +140,32 @@ while running:
                             else:
                                 dmg, pnt =party_attack_from_gems(point,elem,L,combo,party,enemy)
                                 message=f"{elem}攻撃！ {dmg} ダメージ"
-                                point += pnt//10
                             collapse_left(field,start,L)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
                             draw_field(screen, field, font); draw_message(screen, "消滅！", font)
+                            draw_point(screen, point, font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             fill_random(field)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
+                            draw_point(screen, point, font)
                             draw_field(screen, field, font); draw_message(screen, "湧き！", font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if enemy["hp"]<=0:
                                 message=f"{enemy['name']} を倒した！"
                                 break
+                            # print(combo)
+                        point += combo
+                        # print("kei" , combo)
 
                         # 敵ターン or 撃破後処理
                         if enemy["hp"]>0:
                             edmg=enemy_attack(party, enemy)
                             message=f"{enemy['name']}の攻撃！ -{edmg}"
-                            screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
-                            draw_field(screen, field, font); draw_message(screen, message, font)
+                            screen.fill((22,22,28))
+                            draw_top(screen, enemy, party, font)
+                            draw_message(screen, message, font)
+                            draw_point(screen, point, font)
+                            draw_field(screen, field, font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if party["hp"]<=0:
                                 message="パーティは力尽きた…"
@@ -181,8 +190,9 @@ while running:
 
                 screen.fill((22,22,28))
                 draw_top(screen, enemy, party, font)
-                draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
                 draw_message(screen, message, font)
+                draw_point(screen, point, font)
+                draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
 
         if status == 2:
             screen.fill((22,22,28))
@@ -195,10 +205,10 @@ while running:
 
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 0
-                print("reset")
+                # print("reset")
         # print(enemy_idx)
 
-        draw_point(screen, point, font)
+        # draw_point(screen, point, font)
         pg.display.flip()
         clock.tick(60)
 
