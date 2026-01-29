@@ -92,6 +92,7 @@ while running:
                             field[drag_src], field[hover_idx] = field[hover_idx], field[drag_src]
                             drag_src = hover_idx
                             prev_hover = hover_idx
+                            drag_elem = field[hover_idx]
                         # print(prev_hover, drag_src, hover_idx, field)
                         # draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
                         # print(hi, hover_idx)

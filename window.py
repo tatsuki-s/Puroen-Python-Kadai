@@ -57,7 +57,7 @@ def draw_field(screen, field:List[str], font, hover_idx:Optional[int]=None,
             # if i==drag_src:
             #     print(i, elem)
             #     continue
-            if i==hover_idx:
+            if i==hover_idx or drag_src ==i:
                 continue
         rect=slot_rect(i)
         cx,cy=rect.center
