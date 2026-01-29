@@ -139,7 +139,8 @@ while running:
                             else:
                                 dmg, pnt =party_attack_from_gems(point,elem,L,combo,party,enemy)
                                 message=f"{elem}攻撃！ {dmg} ダメージ"
-                                point += pnt//10
+                                point += combo
+                                print(combo)
                             collapse_left(field,start,L)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
                             draw_field(screen, field, font); draw_message(screen, "消滅！", font)
