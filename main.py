@@ -28,7 +28,7 @@ message = "ドラッグで A..N の宝石を移動（例：A→F）"
 
 clock = pg.time.Clock()
 
-# 0: タイトル, 1: プレイ, 2: 未定
+# 0: タイトル, 1: プレイ, 2: ゲームオーバー
 status = 0
 
 running=True
@@ -127,6 +127,7 @@ while running:
                         # 評価ループ
                         combo=0
                         while True:
+                            # print("a",combo)
                             run = leftmost_run(field)
                             if not run: break
                             start,L = run
@@ -139,8 +140,6 @@ while running:
                             else:
                                 dmg, pnt =party_attack_from_gems(point,elem,L,combo,party,enemy)
                                 message=f"{elem}攻撃！ {dmg} ダメージ"
-                                point += combo
-                                print(combo)
                             collapse_left(field,start,L)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
                             draw_field(screen, field, font); draw_message(screen, "消滅！", font)
@@ -154,6 +153,9 @@ while running:
                             if enemy["hp"]<=0:
                                 message=f"{enemy['name']} を倒した！"
                                 break
+                            # print(combo)
+                        point += combo
+                        # print("kei" , combo)
 
                         # 敵ターン or 撃破後処理
                         if enemy["hp"]>0:
