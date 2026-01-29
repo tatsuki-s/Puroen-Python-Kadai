@@ -48,6 +48,7 @@ while running:
             screen.blit(title_screen, [WIN_W // 3, WIN_H // 4])
             text = font.render("Click to start", True, (255,255,255))
             screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
+            draw_point(screen, point, font)
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 1
                 # print("starting...")
@@ -55,8 +56,9 @@ while running:
         # statusが1のときゲームがプレイできる
         elif status == 1:
             draw_top(screen, enemy, party, font)
-            draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
             draw_message(screen, message, font)
+            draw_point(screen, point, font)
+            draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
             if e.type==pg.MOUSEBUTTONDOWN and e.button==1: 
                 mx,my = e.pos
                 if FIELD_Y<=my<=FIELD_Y+SLOT_W:
@@ -92,7 +94,6 @@ while running:
                             field[drag_src], field[hover_idx] = field[hover_idx], field[drag_src]
                             drag_src = hover_idx
                             prev_hover = hover_idx
-                            drag_elem = field[hover_idx]
                         # print(prev_hover, drag_src, hover_idx, field)
                         # draw_field(screen, field, font, hover_idx=None, drag_src=None, drag_elem=None)
                         # print(hi, hover_idx)
@@ -142,9 +143,11 @@ while running:
                             collapse_left(field,start,L)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
                             draw_field(screen, field, font); draw_message(screen, "消滅！", font)
+                            draw_point(screen, point, font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             fill_random(field)
                             screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
+                            draw_point(screen, point, font)
                             draw_field(screen, field, font); draw_message(screen, "湧き！", font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if enemy["hp"]<=0:
@@ -155,8 +158,11 @@ while running:
                         if enemy["hp"]>0:
                             edmg=enemy_attack(party, enemy)
                             message=f"{enemy['name']}の攻撃！ -{edmg}"
-                            screen.fill((22,22,28)); draw_top(screen, enemy, party, font)
-                            draw_field(screen, field, font); draw_message(screen, message, font)
+                            screen.fill((22,22,28))
+                            draw_top(screen, enemy, party, font)
+                            draw_message(screen, message, font)
+                            draw_point(screen, point, font)
+                            draw_field(screen, field, font)
                             pg.display.flip(); time.sleep(FRAME_DELAY)
                             if party["hp"]<=0:
                                 message="パーティは力尽きた…"
@@ -181,8 +187,9 @@ while running:
 
                 screen.fill((22,22,28))
                 draw_top(screen, enemy, party, font)
-                draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
                 draw_message(screen, message, font)
+                draw_point(screen, point, font)
+                draw_field(screen, field, font, hover_idx, drag_src, drag_elem)
 
         if status == 2:
             screen.fill((22,22,28))
@@ -195,10 +202,10 @@ while running:
 
             if e.type == pg.MOUSEBUTTONDOWN:
                 status = 0
-                print("reset")
+                # print("reset")
         # print(enemy_idx)
 
-        draw_point(screen, point, font)
+        # draw_point(screen, point, font)
         pg.display.flip()
         clock.tick(60)
 
