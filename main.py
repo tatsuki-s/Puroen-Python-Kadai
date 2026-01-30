@@ -9,6 +9,7 @@ pg.init()
 screen = pg.display.set_mode((WIN_W, WIN_H))
 pg.display.set_caption(TITLE)
 font = get_jp_font(26)
+title_font = get_jp_font(73)
 
 party = PARTY.copy()
 enemies = copy.deepcopy(ENEMIES)
@@ -44,8 +45,8 @@ while running:
         screen.fill((22,22,28))
         # statusが0のときタイトル画面を描画
         if status == 0:
-            title_screen = font.render(TITLE, True, (255,255,255))
-            screen.blit(title_screen, [WIN_W // 3, WIN_H // 4])
+            title_screen = title_font.render(TITLE, True, (255,255,255))
+            screen.blit(title_screen, [30, WIN_H // 4])
             text = font.render("Click to start", True, (255,255,255))
             screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
             draw_point(screen, point, font)
@@ -55,6 +56,7 @@ while running:
 
         # statusが1のときゲームがプレイできる
         elif status == 1:
+            message = "ドラッグで A..N の宝石を移動（例：A→F）"
             draw_top(screen, enemy, party, font)
             draw_message(screen, message, font)
             draw_point(screen, point, font)
