@@ -212,7 +212,7 @@ while running:
 
         # draw_point(screen, point, font)
         pg.display.flip()
-        clock.tick(60)
+    clock.tick(60)
 
     if keys[pg.K_ESCAPE]:
         running=False
