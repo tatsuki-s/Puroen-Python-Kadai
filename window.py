@@ -82,7 +82,7 @@ def draw_top(screen, enemy, party, font):
 
     # 敵HP数値（バー右側に）
     enemy_hp_text = font.render(f"{enemy['hp']}/{enemy['max_hp']}", True, (240, 240, 240))
-    screen.blit(enemy_hp_text, (750, 78))
+    screen.blit(enemy_hp_text, (800, 78))
 
     # 「パーティ」ラベル
     label = font.render("パーティ", True, (240, 240, 240))
@@ -94,7 +94,7 @@ def draw_top(screen, enemy, party, font):
 
     # パーティHP数値
     party_hp_text = font.render(f"{int(party['hp'])}/{party['max_hp']}", True, (240, 240, 240))
-    screen.blit(party_hp_text, (750, 138))
+    screen.blit(party_hp_text, (800, 138))
 
 def draw_message(screen, text, font):
     surf = font.render(text, True, (230,230,230))
