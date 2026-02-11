@@ -9,7 +9,7 @@ pg.init()
 screen = pg.display.set_mode((WIN_W, WIN_H))
 pg.display.set_caption(TITLE)
 font = get_jp_font(26)
-title_font = get_jp_font(73)
+title_font = get_jp_font(50)
 
 party = PARTY.copy()
 enemies = copy.deepcopy(ENEMIES)
@@ -45,7 +45,7 @@ while running:
         # statusが0のときタイトル画面を描画
         if status == 0:
             title_screen = title_font.render(TITLE, True, (255,255,255))
-            screen.blit(title_screen, [30, WIN_H // 4])
+            screen.blit(title_screen, [200, WIN_H // 4])
             text = font.render("Click to start", True, (255,255,255))
             screen.blit(text, [(WIN_W // 2) - 80, WIN_H // 2])
             draw_point(screen, point, font)
