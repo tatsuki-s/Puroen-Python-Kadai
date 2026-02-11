@@ -137,7 +137,7 @@
 ### 回復
 - 「命」属性の宝石が消滅すると回復
 - 回復量 = 20 × コンボ補正 ± 10% + 経験値
-- パーティHPの最大値を超えることはない
+- パーティHPの最大値（800）を超えることはない
 
 ## 表示システム
 
@@ -163,6 +163,15 @@
   - 30%未満: 赤色
 
 ## ゲーム画面の構成
+### タイトル画面
+
+- 画面上の任意の位置ををクリックでゲームスタート
+- タイトル表示
+- 経験値表示
+
+<img width="1964" height="1516" alt="image" src="https://github.com/user-attachments/assets/ca15b998-14a8-4a41-b6a7-d2b68bc4d134" />
+
+### プレイ画面
 
 - 敵の画像表示
 - パーティと敵のHPバー（数値付き）
@@ -170,6 +179,34 @@
 - ホバー効果とドラッグ中のゴースト表示
 - メッセージ表示
 - 経験値表示
+
+<img width="1964" height="1516" alt="image" src="https://github.com/user-attachments/assets/62e035a4-e6af-4644-a2b0-2fa993100d7d" />
+
+### ゲームオーバー表示
+
+クリックで再びタイトル画面へ
+
+<img width="1964" height="1516" alt="image" src="https://github.com/user-attachments/assets/52315131-2de8-4461-9a78-0fbc6921baa7" />
+
+### ゲームクリア表示
+
+クリックで再びタイトル画面へ
+
+<img width="1964" height="1516" alt="image" src="https://github.com/user-attachments/assets/14ecc1f6-d4e5-4280-98b0-0765e945b5e8" />
+
+## ディレクトリ構成
+```
+project-root/
+├── assets/
+│   ├── fonts/         #フォントを格納
+│   └── monsters/      #モンスターの画像を格納
+├── main.py            #実行ファイル
+├── calc.py            #ダメージなどの計算系
+├── config.py          #初期値などの設定系
+├── font.py            #フォント管理
+├── window.py          #画像・文字などの表示系
+└── requirements.txt   #使用ライブラリ
+```
 
 ## 技術仕様
 
@@ -185,6 +222,7 @@
 ## 参考
 
 このゲームは、教科書の359ページからの課題として設計されています。段階的に機能を追加していくことで、Pythonプログラミングの様々な技術を学習できます。
+
 
 
 
